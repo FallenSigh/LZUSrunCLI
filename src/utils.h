@@ -12,3 +12,4 @@ std::string hmac_md5(const std::string &key, const std::string &message);
 std::string sha1_hash(const std::string &input);
 std::string parse_csrf_token(const std::string& html);
 std::string unwrap_callback(const std::string& response, const std::string& callback);
+std::string get_user_home();

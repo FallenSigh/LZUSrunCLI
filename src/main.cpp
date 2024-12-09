@@ -11,8 +11,6 @@ void output_status(const std::string& status_info);
 void output_login(const std::string& login_info);
 void output_logout(const std::string& logout_info);
 
-constexpr const char *config_file = "config.yaml";
-
 int main(int argc, char *argv[]) {
     initMappings();
 
@@ -23,6 +21,7 @@ int main(int argc, char *argv[]) {
     std::string password;
 
     // add config
+    std::string config_file = get_user_home() + "lzunc_config.yaml";
     app.set_config("--config", config_file, "read a yaml file");
     
     // add command 

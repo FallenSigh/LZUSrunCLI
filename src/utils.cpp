@@ -23,6 +23,19 @@
 #include <ifaddrs.h>
 #endif
 
+std::string get_user_home() {
+#ifdef _WIN32
+    const char *home = std::getenv("USERPROFILE");
+#else
+    const char *home = std::getenv("HOME");
+#endif
+    if (home) {
+        return std::string(home);
+    } else {
+        throw std::runtime_error("Unable to determine the user's home directory");
+    }
+}
+
 std::string unwrap_callback(const std::string& response, const std::string& callback) {
     return response.substr(callback.size() + 1, response.size() - callback.size() - 2);
 }
