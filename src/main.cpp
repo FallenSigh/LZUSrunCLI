@@ -21,7 +21,7 @@ int main(int argc, char *argv[]) {
     std::string password;
 
     // add config
-    std::string config_file = get_user_home() + "lzunc_config.yaml";
+    std::string config_file = get_user_home() + "/lzunc_config.yaml";
     app.set_config("--config", config_file, "read a yaml file");
     
     // add command 
