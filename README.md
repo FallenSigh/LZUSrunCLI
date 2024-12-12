@@ -30,3 +30,8 @@ lzunc logout
 ```
 lzunc status
 ```
+
+#### 查看流量使用情况📡
+```
+lzunc info
+```
