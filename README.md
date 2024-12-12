@@ -11,7 +11,7 @@
 ### Usage📜
 #### 设置用户名密码🔑
 ```
-lzunc config username "xxx" # 在用户名后添加@study以使用eLearning 
+lzunc config account "xxx" # 在用户名后添加@study以使用eLearning 
 lzunc config password "xxx"
 ```
 自动保存在`config.yaml`
