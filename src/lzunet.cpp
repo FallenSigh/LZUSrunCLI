@@ -32,7 +32,8 @@ LZUNetwork::LZUNetwork(const std::string& account, const std::string& password) 
     this->_password = base64_encode(URIComponentEncode(password));
     this->_account = account;
     auto p = account.find('@');
-    this->_username = account.substr(0, p);
+    if (p != std::string::npos) this->_username = account.substr(0, p);
+    else this->_username = account;
     this->_ip = get_ip_address();
 }
 
@@ -184,7 +185,8 @@ std::string LZUNetwork::info() {
 void LZUNetwork::set_account(const std::string& account) noexcept {
     this->_account = account;
     auto p = account.find('@');
-    this->_username = account.substr(0, p);
+    if (p != std::string::npos) this->_username = account.substr(0, p);
+    else this->_username = account;
 }
 void LZUNetwork::set_password(const std::string& password) noexcept {
     this->_password = base64_encode(URIComponentEncode(password));
