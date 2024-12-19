@@ -18,8 +18,9 @@ lzunc config password "xxx"
 
 #### 登入
 ```
-lzunc login
+lzunc login "IP"(optional) 
 ```
+可以填入其他接入校园网设备的ip以认证（方便嵌入式设备的连接）
 
 #### 登出
 ```
