@@ -40,7 +40,6 @@ LZUNetwork::LZUNetwork(const std::string& account, const std::string& password) 
 std::string LZUNetwork::get_challenge() {
     auto callback = generate_callback();
     auto url = std::format(CHALLENGE_URL, callback, this->_account, this->_ip, std::to_string(get_timestamp_ms()));
-   
     auto response = cpr::Get(cpr::Url{url});
     auto result = unwrap_callback(response.text, callback);
 
@@ -56,7 +55,9 @@ std::string LZUNetwork::get_challenge() {
     return challenge;
 }
 
-std::string LZUNetwork::login() {
+std::string LZUNetwork::login(const std::string& ip) {
+    _ip = (ip.empty()) ? get_ip_address() : ip;
+
     auto challenge = get_challenge();
     auto token = challenge;
 

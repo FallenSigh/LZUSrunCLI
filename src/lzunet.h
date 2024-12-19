@@ -7,7 +7,7 @@ class LZUNetwork {
 public:
     LZUNetwork(const std::string& account, const std::string& password);
     std::string get_challenge();
-    std::string login();
+    std::string login(const std::string& ip = "");
     std::string logout();
     std::string status();
     std::string info();

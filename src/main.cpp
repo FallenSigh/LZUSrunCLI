@@ -1,10 +1,10 @@
 #include "encoder.h"
 #include "lzunet.h"
 #include <nlohmann/json_fwd.hpp>
-#include <format>
 #include <fstream>
 #include <iostream>
 #include <CLI/CLI.hpp>
+#include <string>
 #include <utils.h>
 
 void output_status(const std::string& status_info);
@@ -20,6 +20,7 @@ int main(int argc, char *argv[]) {
     // params
     std::string account;
     std::string password;
+    std::string ip;
 
     // add config
     std::string config_file = get_user_home() + "/lzunc_config.yaml";
@@ -33,6 +34,7 @@ int main(int argc, char *argv[]) {
     config_password->add_option("value", password)->required();
 
     auto login = app.add_subcommand("login", "login");
+    login->add_option("IP", ip);
     auto logout = app.add_subcommand("logout", "logout");
     auto status = app.add_subcommand("status", "check status");
     auto info = app.add_subcommand("info", "check data used info");
@@ -49,7 +51,7 @@ int main(int argc, char *argv[]) {
         out << app.config_to_str(false, false);
         out.close();
     } else if (*login) {
-        std::string login_info = lzunet.login();
+        std::string login_info = lzunet.login(ip);
         output_login(login_info);
     } else if (*logout) {
         std::string logout_info = lzunet.logout();
@@ -68,7 +70,8 @@ int main(int argc, char *argv[]) {
 void output_info(const std::string& info_info) {
     auto info = nlohmann::json::parse(info_info);
 
-    std::cout << std::format("{:<15}{:<15}{:<20}{:<15}{:<15}", "产品名称", "已用流量", "已用时长", "使用次数", "产品余额") << "\n";
+    std::cout << std::format("{:<15}{:<15}{:<20}{:<15}{:<15}", 
+    "ProductName", "UsedTraffic", "UsedTime", "UsedCount", "Balance") << "\n";
 
     if (info.size() == 0) {
         std::cout << "Failed to Get Info." << "\n";
@@ -88,7 +91,7 @@ void output_info(const std::string& info_info) {
 void output_status(const std::string& status_info) {
     auto status = nlohmann::json::parse(status_info);
 
-    std::cout << std::format("{:<10}{:<15}{:<20}{:<20}", "产品名称", "用户名",  "IP", "在线时间") << "\n";
+    std::cout << std::format("{:<10}{:<15}{:<20}{:<20}", "ProductName", "Username",  "IP", "OnlineTime") << "\n";
 
     if (status.size() == 0) {
         std::cout << "Failed to Get Status." << "\n";
