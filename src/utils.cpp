@@ -1,4 +1,4 @@
-#include "utils.h"
+﻿#include "utils.h"
 #include <nlohmann/json.hpp>
 #include <random>
 #include <chrono>
@@ -148,7 +148,8 @@ std::string get_ip_address() {
 
     return ipAddress;
 }
-#elifdef _WIN32
+#endif
+#ifdef _WIN32
 std::string get_ip_address() {
     WSADATA wsaData;
     char hostname[256];

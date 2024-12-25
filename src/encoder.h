@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <string>
 
 std::string xEncode(const std::string &str, const std::string &key);
