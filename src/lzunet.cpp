@@ -1,4 +1,4 @@
-#include "lzunet.h"
+﻿#include "lzunet.h"
 #include <cpr/cpr.h>
 #include "cpr/api.h"
 #include "cpr/cprtypes.h"
@@ -11,6 +11,7 @@
 #include <format>
 #include <iostream>
 #include <regex>
+#include <string>
 
 constexpr const char* CHALLENGE_URL = "http://10.10.0.166/cgi-bin/get_challenge?callback={}&username={}&ip={}&_={}";
 constexpr const char* LOGIN_URL = "http://10.10.0.166/cgi-bin/srun_portal";
@@ -29,11 +30,8 @@ using unordered_json = nlohmann::basic_json<
     std::allocator, nlohmann::adl_serializer>;
 
 LZUNetwork::LZUNetwork(const std::string& account, const std::string& password) {
-    this->_password = base64_encode(URIComponentEncode(password));
-    this->_account = account;
-    auto p = account.find('@');
-    if (p != std::string::npos) this->_username = account.substr(0, p);
-    else this->_username = account;
+    this->set_account(account);
+    this->set_password(password);
     this->_ip = get_ip_address();
 }
 

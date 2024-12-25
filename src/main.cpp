@@ -1,4 +1,4 @@
-#include "encoder.h"
+﻿#include "encoder.h"
 #include "lzunet.h"
 #include <nlohmann/json_fwd.hpp>
 #include <fstream>
@@ -7,12 +7,19 @@
 #include <string>
 #include <utils.h>
 
+#ifdef _WIN32
+#include <Windows.h>
+#endif
+
 void output_status(const std::string& status_info);
 void output_login(const std::string& login_info);
 void output_logout(const std::string& logout_info);
 void output_info(const std::string& info_info);
 
 int main(int argc, char *argv[]) {
+    #ifdef _WIN32
+    ::SetConsoleOutputCP(CP_UTF8);
+    #endif
     initMappings();
 
     CLI::App app("Network CLI");
@@ -91,7 +98,7 @@ void output_info(const std::string& info_info) {
 void output_status(const std::string& status_info) {
     auto status = nlohmann::json::parse(status_info);
 
-    std::cout << std::format("{:<10}{:<15}{:<20}{:<20}", "ProductName", "Username",  "IP", "OnlineTime") << "\n";
+    std::cout << std::format("{:<15}{:<20}{:<20}{:<20}", "ProductName", "Username",  "IP", "OnlineTime") << "\n";
 
     if (status.size() == 0) {
         std::cout << "Failed to Get Status." << "\n";
@@ -99,7 +106,7 @@ void output_status(const std::string& status_info) {
     }
 
     for (auto it = status.begin(); it != status.end(); it++) {
-        std::cout << std::format("{:<10}{:<15}{:<20}{:<20}", 
+        std::cout << std::format("{:<15}{:<20}{:<20}{:<20}", 
         (*it)["product_name"].get<std::string>(),
         (*it)["username"].get<std::string>(), 
         (*it)["ip"].get<std::string>(),

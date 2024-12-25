@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <cpr/cpr.h>
 #include <string>
