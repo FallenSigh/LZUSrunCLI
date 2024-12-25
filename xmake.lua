@@ -1,4 +1,4 @@
-set_languages("cxx23")
+set_languages("cxx20")
 add_rules("mode.debug", "mode.release")
 
 local libs = {"cli11", "cpr", "nlohmann_json", "openssl"}
