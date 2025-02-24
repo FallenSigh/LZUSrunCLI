@@ -40,7 +40,7 @@ int main(int argc, char *argv[]) {
     config_account->add_option("value", account)->required();
     config_password->add_option("value", password)->required();
 
-    auto login = app.add_subcommand("login", "login");
+    auto login = app.add_subcommand("login", "login <IP>");
     login->add_option("IP", ip);
     auto logout = app.add_subcommand("logout", "logout");
     auto status = app.add_subcommand("status", "check status");
