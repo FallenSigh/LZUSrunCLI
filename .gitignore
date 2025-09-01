@@ -2,5 +2,6 @@ build
 .xmake
 .cache
 .vscode
+web
 
 compile_commands.json
