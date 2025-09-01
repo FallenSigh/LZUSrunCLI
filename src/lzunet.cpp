@@ -16,7 +16,7 @@
 constexpr const char* CHALLENGE_URL = "http://10.10.0.166/cgi-bin/get_challenge?callback={}&username={}&ip={}&_={}";
 constexpr const char* LOGIN_URL = "http://10.10.0.166/cgi-bin/srun_portal";
 constexpr const char* RAD_USER_INFO_URL = "http://10.10.0.166/cgi-bin/rad_user_info";
-constexpr const char *HOME_URL = "http://10.10.0.166:8800/site/sso";
+constexpr const char *HOME_URL = "https://10.10.0.166:8800/site/sso";
 
 constexpr const char* ENC_VER = "srun_bx1";
 constexpr const char* AC_ID = "2";
@@ -119,70 +119,6 @@ std::string LZUNetwork::logout() {
     auto response = cpr::Get(cpr::Url{LOGIN_URL}, params);
     auto result = unwrap_callback(response.text, callback);
     return result;
-}
-
-std::string LZUNetwork::status() {
-    std::string data = base64_encode(_username + ":" + _password);
-    auto params = cpr::Parameters{{"data", data}};
-    auto response = cpr::Get(cpr::Url{HOME_URL}, params);
-    
-    std::regex regex_pattern(R"(<td data-col-seq="0">(.*?)</td><td data-col-seq="1">(.*?)</td><td data-col-seq="2">(.*?)</td><td data-col-seq="5">(.*?)</td>)");
-    std::smatch match;
-
-    auto res = nlohmann::json::array();
-
-    std::regex_iterator<std::string::iterator> rit(response.text.begin(), response.text.end(), regex_pattern);
-    std::regex_iterator<std::string::iterator> rend;
-
-    while (rit != rend) {
-        std::string username = rit->str(1);
-        std::string ip_address = rit->str(2);
-        std::string online_time = rit->str(3);
-        std::string product_name = rit->str(4);
-
-        res.push_back({
-            {"username", username},
-            {"ip", ip_address},
-            {"online_time", online_time},
-            {"product_name", product_name}
-        });
-
-        ++rit;  
-    }
-
-    return res.dump();
-}
-
-std::string LZUNetwork::info() {
-    std::string data = base64_encode(_username + ":" + _password);
-    auto params = cpr::Parameters{{"data", data}};
-    auto response = cpr::Get(cpr::Url{HOME_URL}, params);
-    
-    std::regex regex_pattern(R"(<td data-col-seq="1">(.*?)</td><td data-col-seq="3">(.*?)</td><td data-col-seq="4">(.*?)</td><td data-col-seq="5">(.*?)</td><td data-col-seq="7">(.*?)</td>)");
-    std::smatch match;
-    auto res = nlohmann::json::array();
-
-    std::regex_iterator<std::string::iterator> rit(response.text.begin(), response.text.end(), regex_pattern);
-    std::regex_iterator<std::string::iterator> rend;
-
-    while (rit != rend) {
-        std::string product_name = rit->str(1);
-        std::string used_traffic = rit->str(2);
-        std::string used_time = rit->str(3);
-        std::string usage_count = rit->str(4);
-        std::string balance = rit->str(5);
-
-        res.push_back({
-            {"product_name", product_name},
-            {"used_traffic", used_traffic},
-            {"used_time", used_time},
-            {"usage_count", usage_count},
-            {"balance", balance}
-        });
-
-        ++rit;  
-    }
-    return res.dump();
 }
 
 void LZUNetwork::set_account(const std::string& account) noexcept {

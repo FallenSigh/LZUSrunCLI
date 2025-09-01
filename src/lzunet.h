@@ -9,8 +9,6 @@ public:
     std::string get_challenge();
     std::string login(const std::string& ip = "");
     std::string logout();
-    std::string status();
-    std::string info();
     void set_account(const std::string& account) noexcept;
     void set_password(const std::string& password) noexcept;
 
