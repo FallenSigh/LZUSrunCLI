@@ -64,12 +64,12 @@ std::string LZUNetwork::login(const std::string& ip) {
         {"password", _password},
         {"ip", _ip},
         {"acid", AC_ID},
-    {"enc_ver", ENC_VER}
+        {"enc_ver", ENC_VER}
     };
     std::string json_str = j.dump(-1, ' ', false, nlohmann::json::error_handler_t::strict);
     std::string i = "{SRBX1}" + custom_b64_encode(xEncode(json_str, token));
 
-    std::string hmd5 = hmac_md5(token, "");
+    std::string hmd5 = hmac_md5(token, _password);
     std::string chkstr = token + _account;
     chkstr += token + hmd5;
     chkstr += token + AC_ID;
@@ -85,15 +85,19 @@ std::string LZUNetwork::login(const std::string& ip) {
         {"action", "login"},
         {"username", _account},
         {"password", "{MD5}" + hmd5},
-        {"ac_id", AC_ID},
-        {"ip", _ip},
-        {"chksum", sha1_hash(chkstr)},
-        {"info", i},
-        {"n", N},
-        {"type", TYPE},
         {"os", std::string(os["device"])},
         {"name", std::string(os["platform"])},
+        {"nas_ip", ""},
         {"double_stack", "0"},
+        {"chksum", sha1_hash(chkstr)},
+        {"info", i},
+        {"ac_id", AC_ID},
+        {"ip", _ip},
+        {"n", N},
+        {"type", TYPE},
+        {"captchaVal", ""},
+        {"ap_id", ""},
+        {"ap_ip", ""},
         {"_", std::to_string(get_timestamp_ms() + 3)}};
 
     auto response = cpr::Get(cpr::Url{LOGIN_URL}, params);
@@ -188,5 +192,6 @@ void LZUNetwork::set_account(const std::string& account) noexcept {
     else this->_username = account;
 }
 void LZUNetwork::set_password(const std::string& password) noexcept {
-    this->_password = base64_encode(URIComponentEncode(password));
+    this->_password = password;
+    this->_encrypted_password = base64_encode(URIComponentEncode(password));
 }

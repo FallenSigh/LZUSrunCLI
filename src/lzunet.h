@@ -18,5 +18,6 @@ private:
     std::string _username;
     std::string _account;
     std::string _password;
+    std::string _encrypted_password;
     std::string _ip;
 };
